@@ -1,3 +1,7 @@
+import { AdminGuard } from '@/auth/admin.guard'
+import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
+import { ZodValidationPipe } from '@/pipes/zod-validation-pipe'
+import { PrismaService } from '@/prisma/prisma.service'
 import {
   Body,
   Controller,
@@ -8,10 +12,6 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { hash } from 'bcryptjs'
-import { AdminGuard } from '@/auth/admin.guard'
-import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
-import { ZodValidationPipe } from '@/pipes/zod-validation-pipe'
-import { PrismaService } from '@/prisma/prisma.service'
 import { z } from 'zod'
 
 const changePasswordBodySchema = z.object({
