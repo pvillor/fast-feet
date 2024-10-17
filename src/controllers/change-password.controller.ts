@@ -6,9 +6,9 @@ import {
   Param,
   Patch,
   UseGuards,
-  UsePipes,
 } from '@nestjs/common'
 import { hash } from 'bcryptjs'
+import { AdminGuard } from 'src/auth/admin.guard'
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe'
 import { PrismaService } from 'src/prisma/prisma.service'
@@ -18,10 +18,12 @@ const changePasswordBodySchema = z.object({
   password: z.string(),
 })
 
+const bodyValidationPipe = new ZodValidationPipe(changePasswordBodySchema)
+
 type ChangePasswordBodySchema = z.infer<typeof changePasswordBodySchema>
 
 @Controller('/accounts')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, AdminGuard)
 export class ChangePasswordController {
   constructor(private prisma: PrismaService) {
     //
@@ -29,11 +31,12 @@ export class ChangePasswordController {
 
   @Patch(':userId/password')
   @HttpCode(204)
-  @UsePipes(new ZodValidationPipe(changePasswordBodySchema))
   async handle(
-    @Param() userId: string,
-    @Body() body: ChangePasswordBodySchema,
+    @Param() params: { userId: string },
+    @Body(bodyValidationPipe)
+    body: ChangePasswordBodySchema,
   ) {
+    const { userId } = params
     const { password } = body
 
     const user = await this.prisma.user.findUnique({
