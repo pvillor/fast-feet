@@ -17,7 +17,7 @@ model User {
   name     String
   cpf      String  @unique
   password String
-  role     Role
+  role     Role    @default(COURIER)
   orders   Order[]
 
   @@map("users")
@@ -43,8 +43,20 @@ model Order {
 
   recipient Recipient @relation(fields: [recipientId], references: [id])
   courier   User?     @relation(fields: [courierId], references: [id])
+  photo     Photo?
 
   @@map("orders")
+}
+
+model Photo {
+  id      String @id @default(uuid())
+  title   String
+  link    String
+  orderId String @unique @map("order_id")
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("photos")
 }
 
 model Recipient {
