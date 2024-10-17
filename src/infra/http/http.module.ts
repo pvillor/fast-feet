@@ -5,6 +5,7 @@ import { CreateCourierController } from './controllers/create-courier.controller
 import { FetchCouriersController } from './controllers/fetch-couriers.controller'
 import { DatabaseModule } from '../database/database.module'
 import { CreateCourierUseCase } from '@/domain/carrier/application/use-cases/create-courier'
+import { FetchCouriersUseCase } from '@/domain/carrier/application/use-cases/fetch-couriers'
 
 @Module({
   imports: [DatabaseModule],
@@ -14,7 +15,7 @@ import { CreateCourierUseCase } from '@/domain/carrier/application/use-cases/cre
     ChangePasswordController,
     FetchCouriersController,
   ],
-  providers: [CreateCourierUseCase],
+  providers: [CreateCourierUseCase, FetchCouriersUseCase],
 })
 export class HttpModule {
   //

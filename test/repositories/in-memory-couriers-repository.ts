@@ -1,3 +1,4 @@
+import { PaginationParams } from '@/core/repositories/pagination-params'
 import { CouriersRepository } from '@/domain/carrier/application/repositories/courier-repository'
 import { Courier } from '@/domain/carrier/enterprise/entities/courier'
 
@@ -22,6 +23,12 @@ export class InMemoryCouriersRepository implements CouriersRepository {
     }
 
     return courier
+  }
+
+  async findMany({ page }: PaginationParams) {
+    const couriers = this.items.slice((page - 1) * 20, page * 20)
+
+    return couriers
   }
 
   async save(courier: Courier) {

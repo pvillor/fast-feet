@@ -3,6 +3,8 @@ import { Courier } from '@/domain/carrier/enterprise/entities/courier'
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { PrismaCourierMapper } from '../mappers/prisma-courier-mapper'
+import { PaginationParams } from '@/core/repositories/pagination-params'
+import { Role } from '@prisma/client'
 
 @Injectable()
 export class PrismaCouriersRepository implements CouriersRepository {
@@ -36,6 +38,22 @@ export class PrismaCouriersRepository implements CouriersRepository {
     }
 
     return PrismaCourierMapper.toDomain(courier)
+  }
+
+  async findMany({ page }: PaginationParams) {
+    const couriers = await this.prisma.user.findMany({
+      where: {
+        role: Role.COURIER,
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    const domainCouriers = await Promise.all(
+      couriers.map(PrismaCourierMapper.toDomain),
+    )
+
+    return domainCouriers
   }
 
   async save(courier: Courier) {
