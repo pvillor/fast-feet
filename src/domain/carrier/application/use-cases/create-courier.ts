@@ -3,6 +3,7 @@ import { Courier } from '../../enterprise/entities/courier'
 import { hash } from 'bcryptjs'
 import { Either, left, right } from '@/core/either'
 import { AlreadyExistsError } from '@/core/errors/errors/already-exists-error'
+import { Injectable } from '@nestjs/common'
 
 interface CreateCourierUseCaseRequest {
   name: string
@@ -17,6 +18,7 @@ type CreateCourierUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class CreateCourierUseCase {
   constructor(private couriersRepository: CouriersRepository) {
     //

@@ -24,7 +24,7 @@ describe('Create account (E2E)', () => {
     await app.init()
   })
 
-  test('[POST] /accounts', async () => {
+  test('[POST] /couriers', async () => {
     const admin = await prisma.user.create({
       data: {
         name: 'admin',
@@ -37,13 +37,12 @@ describe('Create account (E2E)', () => {
     const accessToken = jwt.sign({ sub: admin.id, role: admin.role })
 
     const response = await request(app.getHttpServer())
-      .post('/accounts')
+      .post('/couriers')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'John Doe',
         cpf: '12345678910',
         password: '1234',
-        role: Role.COURIER,
       })
 
     expect(response.statusCode).toBe(201)
