@@ -1,12 +1,4 @@
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  Query,
-  UseGuards,
-} from '@nestjs/common'
-import { AdminGuard } from '@/infra/auth/admin.guard'
-import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
+import { BadRequestException, Controller, Get, Query } from '@nestjs/common'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { FetchCouriersUseCase } from '@/domain/carrier/application/use-cases/fetch-couriers'
@@ -24,7 +16,6 @@ const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
 type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
 
 @Controller('/couriers')
-@UseGuards(JwtAuthGuard, AdminGuard)
 export class FetchCouriersController {
   constructor(private fetchCouriers: FetchCouriersUseCase) {
     //

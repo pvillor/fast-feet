@@ -9,6 +9,7 @@ import {
 import { z } from 'zod'
 import { AuthenticateCourierUseCase } from '@/domain/carrier/application/use-cases/authenticate-courier'
 import { InvalidCredentialsError } from '@/domain/carrier/application/use-cases/errors/wrong-credentials-error'
+import { Public } from '@/infra/auth/public'
 
 const authenticateBodySchema = z.object({
   cpf: z.string().length(11),
@@ -20,6 +21,7 @@ const bodyValidationPipe = new ZodValidationPipe(authenticateBodySchema)
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
 @Controller('/sessions')
+@Public()
 export class AuthenticateController {
   constructor(private authenticateCourier: AuthenticateCourierUseCase) {
     //
@@ -28,7 +30,7 @@ export class AuthenticateController {
   @Post()
   async handle(@Body(bodyValidationPipe) body: AuthenticateBodySchema) {
     const { cpf, password } = body
-    console.log(body)
+
     const result = await this.authenticateCourier.execute({
       cpf,
       password,
