@@ -1,8 +1,9 @@
 import { CouriersRepository } from '../repositories/courier-repository'
 import { Courier } from '../../enterprise/entities/courier'
 import { Either, left, right } from '@/core/either'
-import { AlreadyExistsError } from '@/core/errors/errors/already-exists-error'
 import { Injectable } from '@nestjs/common'
+import { HashGenerator } from '../cryptography/hash-generator'
+import { CourierAlreadyExistsError } from './errors/courier-already-exists-error'
 
 interface CreateCourierUseCaseRequest {
   name: string
@@ -11,7 +12,7 @@ interface CreateCourierUseCaseRequest {
 }
 
 type CreateCourierUseCaseResponse = Either<
-  AlreadyExistsError,
+  CourierAlreadyExistsError,
   {
     courier: Courier
   }
@@ -19,7 +20,10 @@ type CreateCourierUseCaseResponse = Either<
 
 @Injectable()
 export class CreateCourierUseCase {
-  constructor(private couriersRepository: CouriersRepository) {
+  constructor(
+    private couriersRepository: CouriersRepository,
+    private hashGenerator: HashGenerator,
+  ) {
     //
   }
 
@@ -31,13 +35,15 @@ export class CreateCourierUseCase {
     const courierWithSameCpf = await this.couriersRepository.findByCpf(cpf)
 
     if (courierWithSameCpf) {
-      return left(new AlreadyExistsError())
+      return left(new CourierAlreadyExistsError(cpf))
     }
 
-    const courier = await Courier.create({
+    const hashedPassword = await this.hashGenerator.hash(password)
+
+    const courier = Courier.create({
       name,
       cpf,
-      password,
+      password: hashedPassword,
     })
 
     await this.couriersRepository.create(courier)

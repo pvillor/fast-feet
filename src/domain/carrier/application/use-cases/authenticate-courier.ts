@@ -1,7 +1,9 @@
 import { Either, left, right } from '@/core/either'
-import { Courier } from '../../enterprise/entities/courier'
 import { CouriersRepository } from '../repositories/courier-repository'
-import { InvalidCredentialsError } from '@/core/errors/errors/invalid-credentials-error'
+import { HashComparer } from '../cryptography/hash-comparer'
+import { InvalidCredentialsError } from './errors/wrong-credentials-error'
+import { Encrypter } from '../cryptography/encrypter'
+import { Injectable } from '@nestjs/common'
 
 interface AuthenticateCourierUseCaseRequest {
   cpf: string
@@ -11,12 +13,17 @@ interface AuthenticateCourierUseCaseRequest {
 type AuthenticateCourierUseCaseResponse = Either<
   InvalidCredentialsError,
   {
-    courier: Courier
+    accessToken: string
   }
 >
 
+@Injectable()
 export class AuthenticateCourierUseCase {
-  constructor(private couriersRepository: CouriersRepository) {
+  constructor(
+    private couriersRepository: CouriersRepository,
+    private hashComparer: HashComparer,
+    private encrypter: Encrypter,
+  ) {
     //
   }
 
@@ -24,18 +31,26 @@ export class AuthenticateCourierUseCase {
     cpf,
     password,
   }: AuthenticateCourierUseCaseRequest): Promise<AuthenticateCourierUseCaseResponse> {
+    console.log(this.couriersRepository.findByCpf)
     const courier = await this.couriersRepository.findByCpf(cpf)
 
     if (!courier) {
       return left(new InvalidCredentialsError())
     }
 
-    const doesPasswordMatch = password === courier.password
+    const doesPasswordMatch = await this.hashComparer.compare(
+      password,
+      courier.password,
+    )
 
     if (!doesPasswordMatch) {
       return left(new InvalidCredentialsError())
     }
 
-    return right({ courier })
+    const accessToken = await this.encrypter.encrypt({
+      sub: courier.id.toString(),
+    })
+
+    return right({ accessToken })
   }
 }
