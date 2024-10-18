@@ -3,12 +3,12 @@ import { Courier } from '@/domain/carrier/enterprise/entities/courier'
 import { Prisma, User as PrismaUser } from '@prisma/client'
 
 export class PrismaCourierMapper {
-  static async toDomain(raw: PrismaUser): Promise<Courier> {
-    return await Courier.create(
+  static toDomain(raw: PrismaUser): Courier {
+    return Courier.create(
       {
         name: raw.name,
         cpf: raw.cpf,
-        passwordHash: raw.password,
+        password: raw.password,
       },
       new UniqueEntityId(raw.id),
     )
@@ -19,7 +19,7 @@ export class PrismaCourierMapper {
       id: courier.id.toString(),
       name: courier.name,
       cpf: courier.cpf,
-      password: courier.passwordHash,
+      password: courier.password,
     }
   }
 }

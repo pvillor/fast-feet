@@ -13,7 +13,7 @@ export function makeCourier(
     {
       name: faker.person.fullName(),
       cpf: String(faker.number.int({ min: 10000000000, max: 99999999999 })),
-      passwordHash: faker.internet.password(),
+      password: faker.internet.password(),
       ...override,
     },
     id,

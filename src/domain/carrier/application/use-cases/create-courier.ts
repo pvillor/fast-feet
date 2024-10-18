@@ -1,6 +1,5 @@
 import { CouriersRepository } from '../repositories/courier-repository'
 import { Courier } from '../../enterprise/entities/courier'
-import { hash } from 'bcryptjs'
 import { Either, left, right } from '@/core/either'
 import { AlreadyExistsError } from '@/core/errors/errors/already-exists-error'
 import { Injectable } from '@nestjs/common'
@@ -38,7 +37,7 @@ export class CreateCourierUseCase {
     const courier = await Courier.create({
       name,
       cpf,
-      passwordHash: await hash(password, 6),
+      password,
     })
 
     await this.couriersRepository.create(courier)

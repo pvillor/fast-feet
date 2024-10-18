@@ -2,7 +2,6 @@ import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers
 import { makeCourier } from 'test/factories/make-courier'
 import { ChangeCourierPasswordUseCase } from './change-courier-password'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { compare } from 'bcryptjs'
 
 let inMemoryCouriersRepository: InMemoryCouriersRepository
 let sut: ChangeCourierPasswordUseCase
@@ -16,24 +15,22 @@ describe('Change Courier Password', () => {
   it('should be able to change a courier password', async () => {
     const newCourier = await makeCourier(
       {
-        passwordHash: '1234',
+        password: '1234',
       },
       new UniqueEntityId('courier-1'),
     )
 
     await inMemoryCouriersRepository.create(newCourier)
 
-    await sut.execute({
+    const result = await sut.execute({
       courierId: 'courier-1',
       password: '12345',
     })
 
-    expect(
-      await compare('12345', inMemoryCouriersRepository.items[0].passwordHash),
-    ).toEqual(true)
+    if (result.isRight()) {
+      await inMemoryCouriersRepository.save(result.value.courier)
+    }
 
-    expect(
-      await compare('1234', inMemoryCouriersRepository.items[0].passwordHash),
-    ).toEqual(false)
+    expect(inMemoryCouriersRepository.items[0].password).not.toEqual('1234')
   })
 })

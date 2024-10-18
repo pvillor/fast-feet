@@ -24,7 +24,7 @@ describe('Fetch couriers (E2E)', () => {
     await app.init()
   })
 
-  test('[POST] /couriers', async () => {
+  test('[GET] /couriers', async () => {
     const admin = await prisma.user.create({
       data: {
         name: 'admin',
@@ -64,6 +64,7 @@ describe('Fetch couriers (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(200)
+
     expect(response.body.couriers).toHaveLength(3)
   })
 })

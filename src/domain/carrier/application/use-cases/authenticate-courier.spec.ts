@@ -16,7 +16,7 @@ describe('Authenticate Courier', () => {
     const newCourier = await makeCourier(
       {
         cpf: '00000000000',
-        passwordHash: '1234',
+        password: '1234',
       },
       new UniqueEntityId('courier-1'),
     )

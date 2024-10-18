@@ -49,11 +49,7 @@ export class PrismaCouriersRepository implements CouriersRepository {
       skip: (page - 1) * 20,
     })
 
-    const domainCouriers = await Promise.all(
-      couriers.map(PrismaCourierMapper.toDomain),
-    )
-
-    return domainCouriers
+    return couriers.map(PrismaCourierMapper.toDomain)
   }
 
   async save(courier: Courier) {

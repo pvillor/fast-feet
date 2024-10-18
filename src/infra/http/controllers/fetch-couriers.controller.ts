@@ -4,6 +4,7 @@ import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { FetchCouriersUseCase } from '@/domain/carrier/application/use-cases/fetch-couriers'
+import { CourierPresenter } from '../presenters/courier-presenter'
 
 const pageQueryParamSchema = z
   .string()
@@ -25,10 +26,16 @@ export class FetchCouriersController {
 
   @Get()
   async handle(@Query('page', queryValidationPipe) page: PageQueryParamSchema) {
-    const couriers = await this.fetchCouriers.execute({
+    const result = await this.fetchCouriers.execute({
       page,
     })
 
-    return { couriers }
+    if (result.isLeft()) {
+      throw new Error()
+    }
+
+    const { couriers } = result.value
+
+    return { couriers: couriers.map(CourierPresenter.toHTTP) }
   }
 }

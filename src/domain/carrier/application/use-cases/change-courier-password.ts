@@ -30,7 +30,7 @@ export class ChangeCourierPasswordUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    await courier.setPasswordHash(password)
+    courier.password = password
 
     await this.couriersRepository.save(courier)
 

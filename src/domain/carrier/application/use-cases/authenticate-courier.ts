@@ -1,7 +1,6 @@
 import { Either, left, right } from '@/core/either'
 import { Courier } from '../../enterprise/entities/courier'
 import { CouriersRepository } from '../repositories/courier-repository'
-import { compare } from 'bcryptjs'
 import { InvalidCredentialsError } from '@/core/errors/errors/invalid-credentials-error'
 
 interface AuthenticateCourierUseCaseRequest {
@@ -31,7 +30,7 @@ export class AuthenticateCourierUseCase {
       return left(new InvalidCredentialsError())
     }
 
-    const doesPasswordMatch = await compare(password, courier.passwordHash)
+    const doesPasswordMatch = password === courier.password
 
     if (!doesPasswordMatch) {
       return left(new InvalidCredentialsError())
