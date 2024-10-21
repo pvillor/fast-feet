@@ -4,7 +4,8 @@ import { Either, right } from '@/core/either'
 
 interface CreateRecipientUseCaseRequest {
   name: string
-  address: string
+  latitude: number
+  longitude: number
 }
 
 type CreateRecipientUseCaseResponse = Either<
@@ -21,11 +22,13 @@ export class CreateRecipientUseCase {
 
   async execute({
     name,
-    address,
+    latitude,
+    longitude,
   }: CreateRecipientUseCaseRequest): Promise<CreateRecipientUseCaseResponse> {
     const recipient = Recipient.create({
       name,
-      address,
+      latitude,
+      longitude,
     })
 
     await this.recipientsRepository.create(recipient)

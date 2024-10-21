@@ -1,10 +1,10 @@
 export enum Status {
-  Processing = 'processing',
-  Dispatched = 'dispatched',
-  Awaiting = 'awaiting',
-  Collected = 'collected',
-  Delivered = 'delivered',
-  Returned = 'returned',
+  Processing = 'PROCESSING',
+  Dispatched = 'DISPATCHED',
+  Awaiting = 'AWAITING',
+  Collected = 'COLLECTED',
+  Delivered = 'DELIVERED',
+  Returned = 'RETURNED',
 }
 
 export class OrderStatus {

@@ -31,7 +31,6 @@ export class AuthenticateCourierUseCase {
     cpf,
     password,
   }: AuthenticateCourierUseCaseRequest): Promise<AuthenticateCourierUseCaseResponse> {
-    console.log(this.couriersRepository.findByCpf)
     const courier = await this.couriersRepository.findByCpf(cpf)
 
     if (!courier) {

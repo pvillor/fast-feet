@@ -36,7 +36,7 @@ describe('Authenticate (E2E)', () => {
       cpf: '12345678910',
       password: '1234',
     })
-    console.log(response.body)
+
     expect(response.statusCode).toBe(201)
     expect(response.body).toEqual({
       access_token: expect.any(String),

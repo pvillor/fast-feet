@@ -13,7 +13,8 @@ describe('Create Recipient', () => {
   it('should be able to create a recipient', async () => {
     const result = await sut.execute({
       name: 'John Doe',
-      address: '000000000000',
+      latitude: 0.0,
+      longitude: 0.0,
     })
 
     expect(result.isRight()).toBe(true)

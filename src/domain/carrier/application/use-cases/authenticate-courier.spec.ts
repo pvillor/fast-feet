@@ -37,11 +37,11 @@ describe('Authenticate Courier', () => {
       cpf: '00000000000',
       password: '1234',
     })
-    console.log(result.value)
+
     expect(result.isRight()).toBe(true)
     if (result.isRight()) {
       expect(result.value).toEqual({
-        access_token: expect.any(String),
+        accessToken: expect.any(String),
       })
     }
   })

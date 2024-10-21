@@ -10,13 +10,13 @@ import { OrderReturnedEvent } from '../events/order-returned'
 
 export interface OrderProps {
   recipientId: UniqueEntityId
-  courierId?: UniqueEntityId
-  photoId?: UniqueEntityId
-  status: OrderStatus
+  courierId?: UniqueEntityId | null
+  photoId?: UniqueEntityId | null
+  status?: OrderStatus
   orderedAt: Date
-  availableAt?: Date
-  collectedAt?: Date
-  deliveredAt?: Date
+  availableAt?: Date | null
+  collectedAt?: Date | null
+  deliveredAt?: Date | null
 }
 
 export class Order extends AggregateRoot<OrderProps> {

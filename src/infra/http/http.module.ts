@@ -9,6 +9,8 @@ import { FetchCouriersUseCase } from '@/domain/carrier/application/use-cases/fet
 import { AuthenticateCourierUseCase } from '@/domain/carrier/application/use-cases/authenticate-courier'
 import { ChangeCourierPasswordUseCase } from '@/domain/carrier/application/use-cases/change-courier-password'
 import { CryptographyModule } from '../cryptography/cryptography.module'
+import { FetchOrdersNearbyCourierLocationUseCase } from '@/domain/carrier/application/use-cases/fetch-orders-nearby-courier-location'
+import { FetchOrdersNearbyCourierLocationController } from './controllers/fetch-orders-nearby-courier-location.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -17,12 +19,14 @@ import { CryptographyModule } from '../cryptography/cryptography.module'
     AuthenticateController,
     ChangePasswordController,
     FetchCouriersController,
+    FetchOrdersNearbyCourierLocationController,
   ],
   providers: [
     CreateCourierUseCase,
     AuthenticateCourierUseCase,
     ChangeCourierPasswordUseCase,
     FetchCouriersUseCase,
+    FetchOrdersNearbyCourierLocationUseCase,
   ],
 })
 export class HttpModule {
