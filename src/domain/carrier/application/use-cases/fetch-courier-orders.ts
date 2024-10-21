@@ -3,6 +3,7 @@ import { Order } from '../../enterprise/entities/order'
 import { CouriersRepository } from '../repositories/courier-repository'
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface FetchCourierOrdersUseCaseRequest {
   courierId: string
@@ -15,6 +16,7 @@ type FetchCourierOrdersUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class FetchCourierOrdersUseCase {
   constructor(
     private couriersRepository: CouriersRepository,

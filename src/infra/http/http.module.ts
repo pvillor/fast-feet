@@ -11,6 +11,8 @@ import { ChangeCourierPasswordUseCase } from '@/domain/carrier/application/use-c
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { FetchOrdersNearbyCourierLocationUseCase } from '@/domain/carrier/application/use-cases/fetch-orders-nearby-courier-location'
 import { FetchOrdersNearbyCourierLocationController } from './controllers/fetch-orders-nearby-courier-location.controller'
+import { FetchCourierOrdersUseCase } from '@/domain/carrier/application/use-cases/fetch-courier-orders'
+import { FetchCourierOrdersController } from './controllers/fetch-courier-orders.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -20,6 +22,7 @@ import { FetchOrdersNearbyCourierLocationController } from './controllers/fetch-
     ChangePasswordController,
     FetchCouriersController,
     FetchOrdersNearbyCourierLocationController,
+    FetchCourierOrdersController,
   ],
   providers: [
     CreateCourierUseCase,
@@ -27,6 +30,7 @@ import { FetchOrdersNearbyCourierLocationController } from './controllers/fetch-
     ChangeCourierPasswordUseCase,
     FetchCouriersUseCase,
     FetchOrdersNearbyCourierLocationUseCase,
+    FetchCourierOrdersUseCase,
   ],
 })
 export class HttpModule {

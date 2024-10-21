@@ -4,7 +4,6 @@ import { PassportModule } from '@nestjs/passport'
 import { JwtStrategy } from './jwt-strategy'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { APP_GUARD } from '@nestjs/core'
-import { AdminGuard } from './admin.guard'
 import { EnvService } from '../env/env.service'
 import { EnvModule } from '../env/env.module'
 
@@ -33,10 +32,6 @@ import { EnvModule } from '../env/env.module'
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: AdminGuard,
     },
   ],
   exports: [JwtStrategy],
