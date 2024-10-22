@@ -3,6 +3,7 @@ import { Order } from '../../enterprise/entities/order'
 import { OrdersRepository } from '../repositories/order-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { CouriersRepository } from '../repositories/courier-repository'
+import { Injectable } from '@nestjs/common'
 
 interface MarkOrderAsCollectedUseCaseRequest {
   orderId: string
@@ -16,6 +17,7 @@ type MarkOrderAsCollectedUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class MarkOrderAsCollectedUseCase {
   constructor(
     private ordersRepository: OrdersRepository,

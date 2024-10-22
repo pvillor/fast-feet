@@ -6,11 +6,13 @@ import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import { Role } from '@prisma/client'
 import request from 'supertest'
+import { CourierFactory } from 'test/factories/make-courier'
 import { OrderFactory } from 'test/factories/make-order'
 import { RecipientFactory } from 'test/factories/make-recipient'
 
-describe('Mark order as awaiting (E2E)', () => {
+describe('Mark order as collected (E2E)', () => {
   let app: INestApplication
+  let courierFactory: CourierFactory
   let recipientFactory: RecipientFactory
   let orderFactory: OrderFactory
   let prisma: PrismaService
@@ -19,12 +21,13 @@ describe('Mark order as awaiting (E2E)', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [RecipientFactory, OrderFactory],
+      providers: [CourierFactory, RecipientFactory, OrderFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
     prisma = moduleRef.get(PrismaService)
+    courierFactory = moduleRef.get(CourierFactory)
     recipientFactory = moduleRef.get(RecipientFactory)
     orderFactory = moduleRef.get(OrderFactory)
     jwt = moduleRef.get(JwtService)
@@ -32,7 +35,7 @@ describe('Mark order as awaiting (E2E)', () => {
     await app.init()
   })
 
-  test('[GET] /orders/:orderId/awaiting', async () => {
+  test('[GET] /couriers/:courierId/collect/:orderId', async () => {
     const admin = await prisma.user.create({
       data: {
         name: 'admin',
@@ -47,6 +50,8 @@ describe('Mark order as awaiting (E2E)', () => {
       role: Role.ADMIN,
     })
 
+    const courier = await courierFactory.makePrismaCourier()
+
     const recipient = await recipientFactory.makePrismaRecipient()
 
     const order = await orderFactory.makePrismaOrder({
@@ -54,7 +59,7 @@ describe('Mark order as awaiting (E2E)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .patch(`/orders/${order.id}/awaiting`)
+      .patch(`/couriers/${courier.id}/collect/${order.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(204)

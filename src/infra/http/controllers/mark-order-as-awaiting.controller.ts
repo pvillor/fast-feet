@@ -23,7 +23,7 @@ type MarkOrderAsAwaitingParamsSchema = z.infer<
   typeof markOrderAsAwaitingParamsSchema
 >
 
-@Controller('/orders/:orderId')
+@Controller('/orders/:orderId/awaiting')
 @UseGuards(AdminGuard)
 export class MarkOrderAsAwaitingController {
   constructor(private markOrderAsAwaiting: MarkOrderAsAwaitingUseCase) {
