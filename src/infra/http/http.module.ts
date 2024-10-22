@@ -39,9 +39,12 @@ import { MarkOrderAsCollectedController } from './controllers/mark-order-as-coll
 import { MarkOrderAsCollectedUseCase } from '@/domain/carrier/application/use-cases/mark-order-as-collected'
 import { MarkOrderAsReturnedController } from './controllers/mark-order-as-returned.controller'
 import { MarkOrderAsReturnedUseCase } from '@/domain/carrier/application/use-cases/mark-order-as-returned'
+import { MarkOrderAsDeliveredController } from './controllers/mark-order-as-delivered.controller'
+import { MarkOrderAsDeliveredUseCase } from '@/domain/carrier/application/use-cases/mark-order-as-delivered'
+import { StorageModule } from '../storage/storage.module'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule],
+  imports: [DatabaseModule, CryptographyModule, StorageModule],
   controllers: [
     CreateCourierController,
     AuthenticateController,
@@ -64,6 +67,7 @@ import { MarkOrderAsReturnedUseCase } from '@/domain/carrier/application/use-cas
     MarkOrderAsAwaitingController,
     MarkOrderAsCollectedController,
     MarkOrderAsReturnedController,
+    MarkOrderAsDeliveredController,
   ],
   providers: [
     CreateCourierUseCase,
@@ -87,6 +91,7 @@ import { MarkOrderAsReturnedUseCase } from '@/domain/carrier/application/use-cas
     MarkOrderAsAwaitingUseCase,
     MarkOrderAsCollectedUseCase,
     MarkOrderAsReturnedUseCase,
+    MarkOrderAsDeliveredUseCase,
   ],
 })
 export class HttpModule {

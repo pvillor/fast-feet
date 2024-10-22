@@ -5,12 +5,17 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { CouriersRepository } from '../repositories/courier-repository'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { OrderPhoto } from '../../enterprise/entities/order-photo'
+import { Injectable } from '@nestjs/common'
+import { InvalidAttachmentTypeError } from './errors/invalid-attachment-type'
+import { OrderPhotosRepository } from '../repositories/order-photo-repository'
+import { Uploader } from '../storage/uploader'
 
 interface MarkOrderAsDeliveredUseCaseRequest {
   orderId: string
   courierId: string
-  photoTitle: string
-  photoLink: string
+  fileName: string
+  fileType: string
+  body: Buffer
 }
 
 type MarkOrderAsDeliveredUseCaseResponse = Either<
@@ -20,10 +25,13 @@ type MarkOrderAsDeliveredUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class MarkOrderAsDeliveredUseCase {
   constructor(
     private ordersRepository: OrdersRepository,
     private couriersRepository: CouriersRepository,
+    private orderPhotosRepository: OrderPhotosRepository,
+    private uploader: Uploader,
   ) {
     //
   }
@@ -31,8 +39,9 @@ export class MarkOrderAsDeliveredUseCase {
   async execute({
     orderId,
     courierId,
-    photoTitle,
-    photoLink,
+    fileName,
+    fileType,
+    body,
   }: MarkOrderAsDeliveredUseCaseRequest): Promise<MarkOrderAsDeliveredUseCaseResponse> {
     const order = await this.ordersRepository.findById(orderId)
 
@@ -49,15 +58,25 @@ export class MarkOrderAsDeliveredUseCase {
     if (order.courierId?.toString() !== courierId) {
       return left(new NotAllowedError())
     }
+    if (!/^(image\/(jpeg|png))$|^application\/pdf$/.test(fileType)) {
+      return left(new InvalidAttachmentTypeError(fileType))
+    }
+
+    const { url } = await this.uploader.upload({
+      fileName,
+      fileType,
+      body,
+    })
 
     const photo = OrderPhoto.create({
-      title: photoTitle,
-      link: photoLink,
+      title: fileName,
+      url,
       orderId: order.id,
     })
 
     order.deliver(photo.id)
 
+    await this.orderPhotosRepository.create(photo)
     await this.ordersRepository.save(order)
 
     return right({ order })

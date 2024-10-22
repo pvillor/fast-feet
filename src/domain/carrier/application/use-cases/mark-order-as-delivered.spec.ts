@@ -3,21 +3,32 @@ import { makeOrder } from 'test/factories/make-order'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { MarkOrderAsDeliveredUseCase } from './mark-order-as-delivered'
-import { Status } from '../../enterprise/entities/value-objects/order-status'
+import {
+  OrderStatus,
+  Status,
+} from '../../enterprise/entities/value-objects/order-status'
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers-repository'
 import { makeCourier } from 'test/factories/make-courier'
+import { InMemoryOrderPhotosRepository } from 'test/repositories/in-memory-order-photos-repository'
+import { FakeUploader } from 'test/storage/fake-uploader'
 
 let inMemoryOrdersRepository: InMemoryOrdersRepository
 let inMemoryCouriersRepository: InMemoryCouriersRepository
+let inMemoryOrderPhotosRepository: InMemoryOrderPhotosRepository
+let fakeUploader: FakeUploader
 let sut: MarkOrderAsDeliveredUseCase
 
 describe('Mark Order As Delivered', () => {
   beforeEach(() => {
     inMemoryOrdersRepository = new InMemoryOrdersRepository()
     inMemoryCouriersRepository = new InMemoryCouriersRepository()
+    inMemoryOrderPhotosRepository = new InMemoryOrderPhotosRepository()
+    fakeUploader = new FakeUploader()
     sut = new MarkOrderAsDeliveredUseCase(
       inMemoryOrdersRepository,
       inMemoryCouriersRepository,
+      inMemoryOrderPhotosRepository,
+      fakeUploader,
     )
   })
 
@@ -36,13 +47,18 @@ describe('Mark Order As Delivered', () => {
     const result = await sut.execute({
       orderId: newOrder.id.toString(),
       courierId: newCourier.id.toString(),
-      photoLink: 'https://github.com/pvillor.png',
-      photoTitle: 'Example photo title',
+      fileName: 'pvillor.png',
+      fileType: 'image/png',
+      body: Buffer.from(''),
     })
-
+    console.log(result.value)
     expect(result.isRight()).toBe(true)
     if (result.isRight()) {
-      expect(result.value.order.status.value).toEqual(Status.Delivered)
+      expect(result.value).toEqual({
+        order: expect.objectContaining({
+          status: new OrderStatus(Status.Delivered),
+        }),
+      })
     }
   })
 })
