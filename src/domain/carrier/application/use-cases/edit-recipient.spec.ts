@@ -20,12 +20,14 @@ describe('Edit Recipient', () => {
     await sut.execute({
       recipientId: 'recipient-1',
       name: 'John Doe',
-      address: 'john doe new address',
+      latitude: 0.0,
+      longitude: 0.0,
     })
 
     expect(inMemoryRecipientsRepository.items[0]).toMatchObject({
       name: 'John Doe',
-      address: 'john doe new address',
+      latitude: 0.0,
+      longitude: 0.0,
     })
   })
 })
