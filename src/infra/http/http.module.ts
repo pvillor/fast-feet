@@ -29,6 +29,8 @@ import { GetRecipientController } from './controllers/get-recipient.controller'
 import { GetRecipientUseCase } from '@/domain/carrier/application/use-cases/get-recipient'
 import { CreateOrderController } from './controllers/create-order.controller'
 import { CreateOrderUseCase } from '@/domain/carrier/application/use-cases/create-order'
+import { DeleteOrderController } from './controllers/delete-order.controller'
+import { DeleteOrderUseCase } from '@/domain/carrier/application/use-cases/delete-order'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -49,6 +51,7 @@ import { CreateOrderUseCase } from '@/domain/carrier/application/use-cases/creat
     GetRecipientController,
 
     CreateOrderController,
+    DeleteOrderController,
   ],
   providers: [
     CreateCourierUseCase,
@@ -67,6 +70,7 @@ import { CreateOrderUseCase } from '@/domain/carrier/application/use-cases/creat
     GetRecipientUseCase,
 
     CreateOrderUseCase,
+    DeleteOrderUseCase,
   ],
 })
 export class HttpModule {
