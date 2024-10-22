@@ -21,6 +21,8 @@ import { GetCourierByCpfController } from './controllers/get-courier-by-cpf.cont
 import { GetCourierByCpfUseCase } from '@/domain/carrier/application/use-cases/get-courier-by-cpf'
 import { CreateRecipientController } from './controllers/create-recipient.controller'
 import { CreateRecipientUseCase } from '@/domain/carrier/application/use-cases/create-recipient'
+import { DeleteRecipientController } from './controllers/delete-recipient.controller'
+import { DeleteRecipientUseCase } from '@/domain/carrier/application/use-cases/delete-recipient'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -36,6 +38,7 @@ import { CreateRecipientUseCase } from '@/domain/carrier/application/use-cases/c
     GetCourierByCpfController,
 
     CreateRecipientController,
+    DeleteRecipientController,
   ],
   providers: [
     CreateCourierUseCase,
@@ -49,6 +52,7 @@ import { CreateRecipientUseCase } from '@/domain/carrier/application/use-cases/c
     GetCourierByCpfUseCase,
 
     CreateRecipientUseCase,
+    DeleteRecipientUseCase,
   ],
 })
 export class HttpModule {
