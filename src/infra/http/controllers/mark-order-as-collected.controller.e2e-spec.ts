@@ -35,7 +35,7 @@ describe('Mark order as collected (E2E)', () => {
     await app.init()
   })
 
-  test('[GET] /couriers/:courierId/collect/:orderId', async () => {
+  test('[PATCH] /couriers/:courierId/collect/:orderId', async () => {
     const admin = await prisma.user.create({
       data: {
         name: 'admin',

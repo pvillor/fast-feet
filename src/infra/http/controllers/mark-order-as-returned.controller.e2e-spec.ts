@@ -9,7 +9,7 @@ import request from 'supertest'
 import { OrderFactory } from 'test/factories/make-order'
 import { RecipientFactory } from 'test/factories/make-recipient'
 
-describe('Mark order as awaiting (E2E)', () => {
+describe('Mark order as returned (E2E)', () => {
   let app: INestApplication
   let recipientFactory: RecipientFactory
   let orderFactory: OrderFactory
@@ -32,7 +32,7 @@ describe('Mark order as awaiting (E2E)', () => {
     await app.init()
   })
 
-  test('[PATCH] /orders/:orderId/awaiting', async () => {
+  test('[PATCH] /orders/:orderId/returned', async () => {
     const admin = await prisma.user.create({
       data: {
         name: 'admin',
@@ -54,7 +54,7 @@ describe('Mark order as awaiting (E2E)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .patch(`/orders/${order.id}/awaiting`)
+      .patch(`/orders/${order.id}/returned`)
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(204)
