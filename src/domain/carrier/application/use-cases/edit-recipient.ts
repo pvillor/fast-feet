@@ -1,15 +1,18 @@
 import { Either, left, right } from '@/core/either'
 import { RecipientsRepository } from '../repositories/recipient-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface EditRecipientUseCaseRequest {
   recipientId: string
   name: string
-  address: string
+  latitude: number
+  longitude: number
 }
 
 type EditRecipientUseCaseResponse = Either<ResourceNotFoundError, object>
 
+@Injectable()
 export class EditRecipientUseCase {
   constructor(private recipientsRepository: RecipientsRepository) {
     //
@@ -18,7 +21,8 @@ export class EditRecipientUseCase {
   async execute({
     recipientId,
     name,
-    address,
+    latitude,
+    longitude,
   }: EditRecipientUseCaseRequest): Promise<EditRecipientUseCaseResponse> {
     const recipient = await this.recipientsRepository.findById(recipientId)
 
@@ -27,7 +31,8 @@ export class EditRecipientUseCase {
     }
 
     recipient.name = name
-    recipient.address = address
+    recipient.latitude = latitude
+    recipient.longitude = longitude
 
     await this.recipientsRepository.save(recipient)
 

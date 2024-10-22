@@ -23,6 +23,8 @@ import { CreateRecipientController } from './controllers/create-recipient.contro
 import { CreateRecipientUseCase } from '@/domain/carrier/application/use-cases/create-recipient'
 import { DeleteRecipientController } from './controllers/delete-recipient.controller'
 import { DeleteRecipientUseCase } from '@/domain/carrier/application/use-cases/delete-recipient'
+import { EditRecipientController } from './controllers/edit-recipient.controller'
+import { EditRecipientUseCase } from '@/domain/carrier/application/use-cases/edit-recipient'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -39,6 +41,7 @@ import { DeleteRecipientUseCase } from '@/domain/carrier/application/use-cases/d
 
     CreateRecipientController,
     DeleteRecipientController,
+    EditRecipientController,
   ],
   providers: [
     CreateCourierUseCase,
@@ -53,6 +56,7 @@ import { DeleteRecipientUseCase } from '@/domain/carrier/application/use-cases/d
 
     CreateRecipientUseCase,
     DeleteRecipientUseCase,
+    EditRecipientUseCase,
   ],
 })
 export class HttpModule {
