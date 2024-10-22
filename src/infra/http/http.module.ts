@@ -13,6 +13,8 @@ import { FetchOrdersNearbyCourierLocationUseCase } from '@/domain/carrier/applic
 import { FetchOrdersNearbyCourierLocationController } from './controllers/fetch-orders-nearby-courier-location.controller'
 import { FetchCourierOrdersUseCase } from '@/domain/carrier/application/use-cases/fetch-courier-orders'
 import { FetchCourierOrdersController } from './controllers/fetch-courier-orders.controller'
+import { DeleteCourierController } from './controllers/delete-courier.controller'
+import { DeleteCourierUseCase } from '@/domain/carrier/application/use-cases/delete-courier'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -23,6 +25,7 @@ import { FetchCourierOrdersController } from './controllers/fetch-courier-orders
     FetchCouriersController,
     FetchOrdersNearbyCourierLocationController,
     FetchCourierOrdersController,
+    DeleteCourierController,
   ],
   providers: [
     CreateCourierUseCase,
@@ -31,6 +34,7 @@ import { FetchCourierOrdersController } from './controllers/fetch-courier-orders
     FetchCouriersUseCase,
     FetchOrdersNearbyCourierLocationUseCase,
     FetchCourierOrdersUseCase,
+    DeleteCourierUseCase,
   ],
 })
 export class HttpModule {
