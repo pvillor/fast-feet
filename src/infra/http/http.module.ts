@@ -31,6 +31,8 @@ import { CreateOrderController } from './controllers/create-order.controller'
 import { CreateOrderUseCase } from '@/domain/carrier/application/use-cases/create-order'
 import { DeleteOrderController } from './controllers/delete-order.controller'
 import { DeleteOrderUseCase } from '@/domain/carrier/application/use-cases/delete-order'
+import { GetOrderController } from './controllers/get-order.controller'
+import { GetOrderUseCase } from '@/domain/carrier/application/use-cases/get-order'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -52,6 +54,7 @@ import { DeleteOrderUseCase } from '@/domain/carrier/application/use-cases/delet
 
     CreateOrderController,
     DeleteOrderController,
+    GetOrderController,
   ],
   providers: [
     CreateCourierUseCase,
@@ -71,6 +74,7 @@ import { DeleteOrderUseCase } from '@/domain/carrier/application/use-cases/delet
 
     CreateOrderUseCase,
     DeleteOrderUseCase,
+    GetOrderUseCase,
   ],
 })
 export class HttpModule {
