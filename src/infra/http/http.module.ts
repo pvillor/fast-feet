@@ -15,6 +15,8 @@ import { FetchCourierOrdersUseCase } from '@/domain/carrier/application/use-case
 import { FetchCourierOrdersController } from './controllers/fetch-courier-orders.controller'
 import { DeleteCourierController } from './controllers/delete-courier.controller'
 import { DeleteCourierUseCase } from '@/domain/carrier/application/use-cases/delete-courier'
+import { EditCourierController } from './controllers/edit-courier.controller'
+import { EditCourierUseCase } from '@/domain/carrier/application/use-cases/edit-courier'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -26,6 +28,7 @@ import { DeleteCourierUseCase } from '@/domain/carrier/application/use-cases/del
     FetchOrdersNearbyCourierLocationController,
     FetchCourierOrdersController,
     DeleteCourierController,
+    EditCourierController,
   ],
   providers: [
     CreateCourierUseCase,
@@ -35,6 +38,7 @@ import { DeleteCourierUseCase } from '@/domain/carrier/application/use-cases/del
     FetchOrdersNearbyCourierLocationUseCase,
     FetchCourierOrdersUseCase,
     DeleteCourierUseCase,
+    EditCourierUseCase,
   ],
 })
 export class HttpModule {

@@ -11,13 +11,13 @@ import { z } from 'zod'
 import { DeleteCourierUseCase } from '@/domain/carrier/application/use-cases/delete-courier'
 import { AdminGuard } from '@/infra/auth/admin.guard'
 
-const nearbyOrdersParamsSchema = z.object({
+const deleteCourierParamsSchema = z.object({
   courierId: z.string().uuid(),
 })
 
-const paramsValidationPipe = new ZodValidationPipe(nearbyOrdersParamsSchema)
+const paramsValidationPipe = new ZodValidationPipe(deleteCourierParamsSchema)
 
-type NearbyOrdersParamsSchema = z.infer<typeof nearbyOrdersParamsSchema>
+type DeleteCourierParamsSchema = z.infer<typeof deleteCourierParamsSchema>
 
 @Controller('/couriers/:courierId')
 @UseGuards(AdminGuard)
@@ -28,7 +28,7 @@ export class DeleteCourierController {
 
   @Delete()
   @HttpCode(204)
-  async handle(@Param(paramsValidationPipe) params: NearbyOrdersParamsSchema) {
+  async handle(@Param(paramsValidationPipe) params: DeleteCourierParamsSchema) {
     const { courierId } = params
 
     const result = await this.deleteCourier.execute({
