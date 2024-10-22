@@ -1,19 +1,21 @@
 import { Either, left, right } from '@/core/either'
 import { Order } from '../../enterprise/entities/order'
 import { OrdersRepository } from '../repositories/order-repository'
-import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { OrderNotFoundError } from './errors/order-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface MarkOrderAsAwaitingUseCaseRequest {
   orderId: string
 }
 
 type MarkOrderAsAwaitingUseCaseResponse = Either<
-  ResourceNotFoundError,
+  OrderNotFoundError,
   {
     order: Order
   }
 >
 
+@Injectable()
 export class MarkOrderAsAwaitingUseCase {
   constructor(private ordersRepository: OrdersRepository) {
     //
@@ -25,7 +27,7 @@ export class MarkOrderAsAwaitingUseCase {
     const order = await this.ordersRepository.findById(orderId)
 
     if (!order) {
-      return left(new ResourceNotFoundError())
+      return left(new OrderNotFoundError())
     }
 
     order.release()

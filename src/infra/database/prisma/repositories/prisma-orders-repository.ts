@@ -49,7 +49,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
   async save(order: Order) {
     const data = PrismaOrderMapper.toPrisma(order)
 
-    await this.prisma.recipient.update({
+    await this.prisma.order.update({
       where: {
         id: data.id,
       },

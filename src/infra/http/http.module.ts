@@ -33,6 +33,8 @@ import { DeleteOrderController } from './controllers/delete-order.controller'
 import { DeleteOrderUseCase } from '@/domain/carrier/application/use-cases/delete-order'
 import { GetOrderController } from './controllers/get-order.controller'
 import { GetOrderUseCase } from '@/domain/carrier/application/use-cases/get-order'
+import { MarkOrderAsAwaitingController } from './controllers/mark-order-as-awaiting.controller'
+import { MarkOrderAsAwaitingUseCase } from '@/domain/carrier/application/use-cases/mark-order-as-awaiting'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -55,6 +57,7 @@ import { GetOrderUseCase } from '@/domain/carrier/application/use-cases/get-orde
     CreateOrderController,
     DeleteOrderController,
     GetOrderController,
+    MarkOrderAsAwaitingController,
   ],
   providers: [
     CreateCourierUseCase,
@@ -75,6 +78,7 @@ import { GetOrderUseCase } from '@/domain/carrier/application/use-cases/get-orde
     CreateOrderUseCase,
     DeleteOrderUseCase,
     GetOrderUseCase,
+    MarkOrderAsAwaitingUseCase,
   ],
 })
 export class HttpModule {
