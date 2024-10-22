@@ -30,7 +30,6 @@ export class GetCourierByCpfController {
     @Param(paramsValidationPipe) params: GetCourierByCpfParamsSchema,
   ) {
     const { cpf } = params
-    console.log('cpf:', cpf)
 
     const result = await this.getCourierByCpf.execute({
       cpf,
