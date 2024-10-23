@@ -3,7 +3,9 @@ import { EventHandler } from '@/core/events/event-handler'
 import { OrderCollectedEvent } from '@/domain/carrier/enterprise/events/order-collected'
 import { SendNotificationUseCase } from '../use-cases/send-notification'
 import { CouriersRepository } from '@/domain/carrier/application/repositories/courier-repository'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class OnOrderCollected implements EventHandler {
   constructor(
     private couriersRepository: CouriersRepository,
