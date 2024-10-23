@@ -3,6 +3,7 @@ import { Order } from '@/domain/carrier/enterprise/entities/order'
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { PrismaOrderMapper } from '../mappers/prisma-order-mapper'
+import { DomainEvents } from '@/core/events/domain-events'
 
 @Injectable()
 export class PrismaOrdersRepository implements OrdersRepository {
@@ -55,12 +56,16 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
       data,
     })
+
+    DomainEvents.dispatchEventsForAggregate(order.id)
   }
 
   async create(order: Order) {
     const data = PrismaOrderMapper.toPrisma(order)
 
     await this.prisma.order.create({ data })
+
+    DomainEvents.dispatchEventsForAggregate(order.id)
   }
 
   async delete(order: Order) {
