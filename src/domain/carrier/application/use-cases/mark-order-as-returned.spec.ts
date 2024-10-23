@@ -25,7 +25,7 @@ describe('Mark Order As Returned', () => {
 
     expect(result.isRight()).toBe(true)
     if (result.isRight()) {
-      expect(result.value.order.status.value).toEqual(Status.Returned)
+      expect(result.value.order.status?.value).toEqual(Status.Returned)
     }
   })
 })

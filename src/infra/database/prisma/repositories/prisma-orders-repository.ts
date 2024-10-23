@@ -4,14 +4,26 @@ import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { PrismaOrderMapper } from '../mappers/prisma-order-mapper'
 import { DomainEvents } from '@/core/events/domain-events'
+import { CacheRepository } from '@/infra/cache/cache-repository'
 
 @Injectable()
 export class PrismaOrdersRepository implements OrdersRepository {
-  constructor(private prisma: PrismaService) {
+  constructor(
+    private prisma: PrismaService,
+    private cache: CacheRepository,
+  ) {
     //
   }
 
   async findById(id: string) {
+    const cacheHit = await this.cache.get(`order:${id}:details`)
+
+    if (cacheHit) {
+      const cachedData = JSON.parse(cacheHit)
+
+      return cachedData
+    }
+
     const order = await this.prisma.order.findUnique({
       where: {
         id,
@@ -22,7 +34,11 @@ export class PrismaOrdersRepository implements OrdersRepository {
       return null
     }
 
-    return PrismaOrderMapper.toDomain(order)
+    const orderDetails = PrismaOrderMapper.toDomain(order)
+
+    await this.cache.set(`order:${id}:details`, JSON.stringify(orderDetails))
+
+    return orderDetails
   }
 
   async findManyByCourierId(courierId: string) {
@@ -56,6 +72,8 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
       data,
     })
+
+    await this.cache.delete(`order:${data.id}:details`)
 
     DomainEvents.dispatchEventsForAggregate(order.id)
   }

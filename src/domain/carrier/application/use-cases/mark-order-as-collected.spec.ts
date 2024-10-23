@@ -35,7 +35,7 @@ describe('Mark Order As Collected', () => {
 
     expect(result.isRight()).toBe(true)
     if (result.isRight()) {
-      expect(result.value.order.status.value).toEqual(Status.Collected)
+      expect(result.value.order.status?.value).toEqual(Status.Collected)
     }
   })
 })
