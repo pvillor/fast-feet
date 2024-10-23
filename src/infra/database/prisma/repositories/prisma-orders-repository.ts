@@ -21,7 +21,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
     if (cacheHit) {
       const cachedData = JSON.parse(cacheHit)
 
-      return cachedData
+      return PrismaOrderMapper.toDomain(cachedData)
     }
 
     const order = await this.prisma.order.findUnique({
@@ -34,9 +34,9 @@ export class PrismaOrdersRepository implements OrdersRepository {
       return null
     }
 
-    const orderDetails = PrismaOrderMapper.toDomain(order)
+    await this.cache.set(`order:${id}:details`, JSON.stringify(order))
 
-    await this.cache.set(`order:${id}:details`, JSON.stringify(orderDetails))
+    const orderDetails = PrismaOrderMapper.toDomain(order)
 
     return orderDetails
   }
