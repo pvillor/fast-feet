@@ -48,7 +48,7 @@ export class AuthenticateCourierUseCase {
 
     const accessToken = await this.encrypter.encrypt({
       sub: courier.id.toString(),
-      role: 'COURIER',
+      role: courier.role,
     })
 
     return right({ accessToken })

@@ -5,10 +5,10 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common'
-import { AdminGuard } from '@/infra/auth/admin.guard'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { CreateRecipientUseCase } from '@/domain/carrier/application/use-cases/create-recipient'
+import { AdminGuard } from '@/infra/auth/admin.guard'
 
 const createRecipientBodySchema = z.object({
   name: z.string(),
@@ -28,10 +28,7 @@ export class CreateRecipientController {
   }
 
   @Post()
-  async handle(
-    @Body(bodyValidationPipe)
-    body: CreateRecipientBodySchema,
-  ) {
+  async handle(@Body(bodyValidationPipe) body: CreateRecipientBodySchema) {
     const { name, latitude, longitude } = body
 
     const result = await this.createRecipient.execute({

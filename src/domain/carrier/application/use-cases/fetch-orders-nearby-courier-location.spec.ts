@@ -4,6 +4,10 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { FetchOrdersNearbyCourierLocationUseCase } from './fetch-orders-nearby-courier-location'
 import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipients-repository'
 import { makeRecipient } from 'test/factories/make-recipient'
+import {
+  OrderStatus,
+  Status,
+} from '../../enterprise/entities/value-objects/order-status'
 
 let inMemoryRecipientsRepository: InMemoryRecipientsRepository
 let inMemoryOrdersRepository: InMemoryOrdersRepository
@@ -40,9 +44,11 @@ describe('Fetch Orders Nearby Courier Location', () => {
 
     const newOrder = makeOrder({
       recipientId: new UniqueEntityId('recipient-1'),
+      status: new OrderStatus(Status.Awaiting),
     })
     const newOrder2 = makeOrder({
       recipientId: new UniqueEntityId('recipient-2'),
+      status: new OrderStatus(Status.Awaiting),
     })
 
     await inMemoryOrdersRepository.create(newOrder)

@@ -1,15 +1,8 @@
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  Query,
-  UseGuards,
-} from '@nestjs/common'
+import { BadRequestException, Controller, Get, Query } from '@nestjs/common'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
-import { Public } from '@/infra/auth/public'
-import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { FetchOrdersNearbyCourierLocationUseCase } from '@/domain/carrier/application/use-cases/fetch-orders-nearby-courier-location'
+import { OrderPresenter } from '../presenters/order-presenter'
 
 const nearbyOrdersQuerySchema = z.object({
   latitude: z.coerce.number().refine((value) => {
@@ -25,8 +18,6 @@ const queryValidationPipe = new ZodValidationPipe(nearbyOrdersQuerySchema)
 type NearbyOrdersQuerySchema = z.infer<typeof nearbyOrdersQuerySchema>
 
 @Controller('/orders/nearby')
-@Public()
-@UseGuards(JwtAuthGuard)
 export class FetchOrdersNearbyCourierLocationController {
   constructor(
     private fetchOrdersNearbyCourierLocation: FetchOrdersNearbyCourierLocationUseCase,
@@ -49,6 +40,6 @@ export class FetchOrdersNearbyCourierLocationController {
 
     const { orders } = result.value
 
-    return { orders }
+    return { orders: orders.map(OrderPresenter.toHTTP) }
   }
 }

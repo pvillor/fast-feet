@@ -1,10 +1,16 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
+export enum Role {
+  ADMIN = 'ADMIN',
+  COURIER = 'COURIER',
+}
+
 export interface CourierProps {
   name: string
   cpf: string
   password: string
+  role: Role
 }
 
 export class Courier extends Entity<CourierProps> {
@@ -34,6 +40,14 @@ export class Courier extends Entity<CourierProps> {
 
   set password(password: string) {
     this.props.password = password
+  }
+
+  get role() {
+    return this.props.role
+  }
+
+  set role(role: Role) {
+    this.props.role = role
   }
 
   static create(props: CourierProps, id?: UniqueEntityId) {

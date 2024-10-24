@@ -1,5 +1,5 @@
 import { CouriersRepository } from '../repositories/courier-repository'
-import { Courier } from '../../enterprise/entities/courier'
+import { Courier, Role } from '../../enterprise/entities/courier'
 import { Either, left, right } from '@/core/either'
 import { Injectable } from '@nestjs/common'
 import { HashGenerator } from '../cryptography/hash-generator'
@@ -9,6 +9,7 @@ interface CreateCourierUseCaseRequest {
   name: string
   cpf: string
   password: string
+  role?: Role
 }
 
 type CreateCourierUseCaseResponse = Either<
@@ -31,6 +32,7 @@ export class CreateCourierUseCase {
     name,
     cpf,
     password,
+    role,
   }: CreateCourierUseCaseRequest): Promise<CreateCourierUseCaseResponse> {
     const courierWithSameCpf = await this.couriersRepository.findByCpf(cpf)
 
@@ -44,6 +46,7 @@ export class CreateCourierUseCase {
       name,
       cpf,
       password: hashedPassword,
+      role: role ?? Role.COURIER,
     })
 
     await this.couriersRepository.create(courier)

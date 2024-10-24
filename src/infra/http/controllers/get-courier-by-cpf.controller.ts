@@ -9,6 +9,7 @@ import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { AdminGuard } from '@/infra/auth/admin.guard'
 import { GetCourierByCpfUseCase } from '@/domain/carrier/application/use-cases/get-courier-by-cpf'
+import { CourierPresenter } from '../presenters/courier-presenter'
 
 const getCourierByCpfParamsSchema = z.object({
   cpf: z.string(),
@@ -41,6 +42,6 @@ export class GetCourierByCpfController {
 
     const { courier } = result.value
 
-    return { courier }
+    return { courier: CourierPresenter.toHTTP(courier) }
   }
 }

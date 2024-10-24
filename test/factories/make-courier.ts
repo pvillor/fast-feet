@@ -2,6 +2,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import {
   Courier,
   CourierProps,
+  Role,
 } from '@/domain/carrier/enterprise/entities/courier'
 import { PrismaCourierMapper } from '@/infra/database/prisma/mappers/prisma-courier-mapper'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
@@ -17,6 +18,7 @@ export function makeCourier(
       name: faker.person.fullName(),
       cpf: String(faker.number.int({ min: 10000000000, max: 99999999999 })),
       password: faker.internet.password(),
+      role: Role.COURIER,
       ...override,
     },
     id,

@@ -1,5 +1,5 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { Courier } from '@/domain/carrier/enterprise/entities/courier'
+import { Courier, Role } from '@/domain/carrier/enterprise/entities/courier'
 import { Prisma, User as PrismaUser } from '@prisma/client'
 
 export class PrismaCourierMapper {
@@ -9,6 +9,7 @@ export class PrismaCourierMapper {
         name: raw.name,
         cpf: raw.cpf,
         password: raw.password,
+        role: raw.role as Role,
       },
       new UniqueEntityId(raw.id),
     )
@@ -20,6 +21,7 @@ export class PrismaCourierMapper {
       name: courier.name,
       cpf: courier.cpf,
       password: courier.password,
+      role: courier.role,
     }
   }
 }

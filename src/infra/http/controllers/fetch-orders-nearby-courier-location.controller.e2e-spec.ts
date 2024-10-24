@@ -1,3 +1,7 @@
+import {
+  OrderStatus,
+  Status,
+} from '@/domain/carrier/enterprise/entities/value-objects/order-status'
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
@@ -51,11 +55,12 @@ describe('Fetch orders nearby (E2E)', () => {
 
     await orderFactory.makePrismaOrder({
       recipientId: recipient.id,
+      status: new OrderStatus(Status.Awaiting),
     })
 
     const response = await request(app.getHttpServer())
       .get('/orders/nearby')
-      .query(`latitude=${-3.1031296}&longitude=${-59.962163214}`)
+      .query({ latitude: -3.1031296, longitude: -59.962163214 })
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(200)

@@ -15,7 +15,6 @@ export function makeOrder(
     },
     id,
   )
-
   return order
 }
 

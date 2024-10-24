@@ -9,6 +9,7 @@ import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { AdminGuard } from '@/infra/auth/admin.guard'
 import { GetOrderUseCase } from '@/domain/carrier/application/use-cases/get-order'
+import { OrderPresenter } from '../presenters/order-presenter'
 
 const getOrderParamsSchema = z.object({
   orderId: z.string().uuid(),
@@ -39,6 +40,6 @@ export class GetOrderController {
 
     const { order } = result.value
 
-    return { order }
+    return { order: OrderPresenter.toHTTP(order) }
   }
 }

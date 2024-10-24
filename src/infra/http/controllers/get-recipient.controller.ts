@@ -9,6 +9,7 @@ import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { AdminGuard } from '@/infra/auth/admin.guard'
 import { GetRecipientUseCase } from '@/domain/carrier/application/use-cases/get-recipient'
+import { RecipientPresenter } from '../presenters/recipient-presenter'
 
 const getRecipientParamsSchema = z.object({
   recipientId: z.string().uuid(),
@@ -39,6 +40,6 @@ export class GetRecipientController {
 
     const { recipient } = result.value
 
-    return { recipient }
+    return { recipient: RecipientPresenter.toHTTP(recipient) }
   }
 }

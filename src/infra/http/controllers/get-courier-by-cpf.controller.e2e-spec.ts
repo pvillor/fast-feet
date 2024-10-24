@@ -49,7 +49,6 @@ describe('Get courier by CPF (E2E)', () => {
     const response = await request(app.getHttpServer())
       .get(`/couriers/${courier.cpf}`)
       .set('Authorization', `Bearer ${accessToken}`)
-    console.log(response.body)
 
     expect(response.statusCode).toBe(200)
   })

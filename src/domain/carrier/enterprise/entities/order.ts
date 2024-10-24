@@ -88,7 +88,7 @@ export class Order extends AggregateRoot<OrderProps> {
     const order = new Order(
       {
         ...props,
-        status: new OrderStatus(Status.Processing),
+        status: props.status ?? new OrderStatus(Status.Processing),
         orderedAt: new Date(),
       },
       id,

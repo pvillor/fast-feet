@@ -3,6 +3,7 @@ import { Order } from '../../enterprise/entities/order'
 import { Either, right } from '@/core/either'
 import { RecipientsRepository } from '../repositories/recipient-repository'
 import { Injectable } from '@nestjs/common'
+import { Status } from '../../enterprise/entities/value-objects/order-status'
 
 interface FetchOrdersNearbyCourierLocationUseCaseRequest {
   courierLatitude: number
@@ -39,6 +40,8 @@ export class FetchOrdersNearbyCourierLocationUseCase {
     const orders =
       await this.ordersRepository.findManyByRecipientIds(recipientIds)
 
-    return right({ orders })
+    return right({
+      orders: orders.filter((order) => order.status?.value === Status.Awaiting),
+    })
   }
 }

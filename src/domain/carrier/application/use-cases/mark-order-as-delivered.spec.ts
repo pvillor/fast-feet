@@ -51,7 +51,7 @@ describe('Mark Order As Delivered', () => {
       fileType: 'image/png',
       body: Buffer.from(''),
     })
-    console.log(result.value)
+
     expect(result.isRight()).toBe(true)
     if (result.isRight()) {
       expect(result.value).toEqual({

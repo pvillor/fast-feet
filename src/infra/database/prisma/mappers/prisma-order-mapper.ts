@@ -12,11 +12,15 @@ import {
 
 export class PrismaOrderMapper {
   static toDomain(raw: PrismaOrder): Order {
+    const status = Object.values(Status).includes(raw.status as Status)
+      ? new OrderStatus(raw.status as Status)
+      : new OrderStatus(Status.Processing)
+
     return Order.create(
       {
         recipientId: new UniqueEntityId(raw.recipientId),
         courierId: !raw.courierId ? null : new UniqueEntityId(raw.courierId),
-        status: new OrderStatus(Status[raw.status]),
+        status,
         orderedAt: raw.orderedAt,
         availableAt: raw.availableAt,
         collectedAt: raw.collectedAt,
@@ -31,9 +35,8 @@ export class PrismaOrderMapper {
       id: order.id.toString(),
       recipientId: order.recipientId.toString(),
       courierId: order.courierId?.toString() || null,
-      status: order.status?.value
-        ? PrismaOrderStatus[order.status.value]
-        : PrismaOrderStatus.PROCESSING,
+      status:
+        PrismaOrderStatus[order.status!.value] || PrismaOrderStatus.PROCESSING,
       orderedAt: order.orderedAt,
       availableAt: order.availableAt,
       deliveredAt: order.deliveredAt,

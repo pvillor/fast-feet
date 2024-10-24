@@ -10,6 +10,7 @@ import { z } from 'zod'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt-strategy'
 import { FetchCourierOrdersUseCase } from '@/domain/carrier/application/use-cases/fetch-courier-orders'
+import { OrderPresenter } from '../presenters/order-presenter'
 
 const fetchCourierOrdersParamsSchema = z.object({
   courierId: z.string().uuid(),
@@ -50,6 +51,6 @@ export class FetchCourierOrdersController {
 
     const { orders } = result.value
 
-    return { orders }
+    return { orders: orders.map(OrderPresenter.toHTTP) }
   }
 }
